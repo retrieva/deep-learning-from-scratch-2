@@ -1,0 +1,36 @@
+
+## このディレクトリについて
+
+ * 「ゼロから作るDeep Learning 2 自然言語編 読書会」のサンプルをPythonで実装してみるチームの作業ディレクトリです。
+
+## メモ
+ * 環境はUbuntu 16.04.3 LTSを使用
+ * PythonはPython 3.5.2
+
+## ToDo
+ - [X]ディレクトリを作る
+ - [X]numpyのインストール
+ - [ ]何を作るか確認する
+   - [X]シグモイド関数(P.13)
+   - [ ]シグモイド関数をクラス化(P.15)
+   - [ ]Affineレイヤの実装(P.15) 
+   - [ ]TwoLayerNetの作成(P.17)
+   - [ ]
+
+## 開発環境の構築
+
+```
+$ sudo apt-get install -y python3-numpy
+$ 
+$ mkdir python
+
+$ # numpyが入っているかどうかの確認
+$ # エラーが出なければOK
+$ python3
+Python 3.5.2 (default, Nov 12 2018, 13:43:14)
+[GCC 5.4.0 20160609] on linux
+Type "help", "copyright", "credits" or "license" for more information.
+>>> import numpy
+>>>
+```
+ 
