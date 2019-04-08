@@ -1,6 +1,5 @@
 import cupy as np
 
-
 class MatMul:
 
     def __init__(self, W):
@@ -23,7 +22,7 @@ class MatMul:
 
 class Sigmoid:
     def __init__(self):
-        self.params, self.grad = [], []
+        self.params, self.grads = [], []
         self.x = None
 
     def forward(self, x):
@@ -38,7 +37,7 @@ class Sigmoid:
 class Affine:
     def __init__(self, W, b):
         self.params = [W, b]
-        self.grad = [np.zeros_like(W), np.zeros_like(b)]
+        self.grads = [np.zeros_like(W), np.zeros_like(b)]
         self.x = None
 
     def forward(self, x):
@@ -56,16 +55,32 @@ class Affine:
         self.grads[1][...] = db
         return dx
 
-class SoftMaxWithLoss:
+class SoftmaxWithLoss:
     def __init__(self):
-        self.params, self.grad = [], []
+        self.params, self.grads = [], []
         self.y = None
         self.t = None
 
     def forward(self, x, t):
-        y = np.exp(x) / sum(np.exp(x))
+        if x.ndim == 2: # ミニバッチ使用時
+            x = x - x.max(axis=1, keepdims=True)
+            x = np.exp(x)
+            y = x / x.sum(axis=1, keepdims=True)
+        elif x.ndim == 1:
+            x = x - np.max(x)
+            y = np.exp(x) / np.sum(np.exp(x))
+
+        if y.ndim == 1:
+            t = t.reshape(1, t.size)
+            y = y.reshape(1, y.size)
+
+        # 教師ラベルがone-hotベクトルの場合、正解のインデックスに変換
+        if t.size == y.size:
+            t = t.argmax(axis=1)
+
+        batch_size = y.shape[0]
+        loss = - 1.0 * np.sum(t * np.log(y[np.arange(batch_size), t] + 1e-7)) / batch_size
         self.y = y
-        loss = np.sum(t * np.log(y))
         self.t = t
         return loss
 
@@ -73,5 +88,7 @@ class SoftMaxWithLoss:
         batch_size = self.t.shape[0]
         dx = self.y.copy()
         dx[np.arange(batch_size), self.t] -= 1
+        dx *= dout
+        dx = dx / batch_size
         return dx
-        
+
