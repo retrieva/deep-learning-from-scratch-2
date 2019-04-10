@@ -1,5 +1,5 @@
 require "test/unit"
-require "./softmax_with_loss"
+require "softmax_with_loss"
 require "numo/narray"
 
 class TestSoftmaxWithLoss < Test::Unit::TestCase
