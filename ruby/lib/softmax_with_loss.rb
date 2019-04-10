@@ -24,7 +24,7 @@ class SoftmaxWithLoss
     batch_size = @t.shape[0]
     
     dx = @y.copy()
-    dx[@np.new(batch_size), @t] -= 1
+    dx[@np.new(batch_size).seq, @t] -= 1
     
     dx *= dout
     dx = dx / batch_size
@@ -57,8 +57,15 @@ class SoftmaxWithLoss
     end
              
     batch_size = y.shape[0]
-
-    return -1 * @npm.sum(@npm.log(y[@np.new(batch_size), t] + 1e-7)) / batch_size
+    
+    #p y
+    #p t
+    
+    e1 = y.slice(@np.new(batch_size).seq, t)
+    e2 = @npm.log(e1 + 1e-7)
+    #p e1
+    #p e2
+    return -1 * e2.sum / batch_size
   end
   
   def params
