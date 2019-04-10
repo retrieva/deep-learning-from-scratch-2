@@ -4,8 +4,6 @@ class SoftmaxWithLoss
   def initialize
     @y = nil  # softmaxの出力
     @t = nil  # 教師ラベル
-    @np = Numo::SFloat
-    @npm = Numo::SFloat::Math
   end
 
   def forward(x, t)
@@ -24,7 +22,7 @@ class SoftmaxWithLoss
     batch_size = @t.shape[0]
     
     dx = @y.copy()
-    dx[@np.new(batch_size).seq, @t] -= 1
+    dx[Numo::SFloat.new(batch_size).seq, @t] -= 1
     
     dx *= dout
     dx = dx / batch_size
@@ -35,11 +33,11 @@ class SoftmaxWithLoss
   def softmax(x)
     if x.ndim == 2
       x = x - x.max(axis: 1, keepdims: true)
-      x = @npm.exp(x)
+      x = Numo::NMath.exp(x)
       x /= x.sum(axis: 1, keepdims: true)
     elsif x.ndim == 1
       x = x - x.max
-      x = @npm.exp(x) / @npm.exp(x).sum
+      x = Numo::NMath.exp(x) / Numo::NMath.exp(x).sum
     end
 
     return x
@@ -55,16 +53,15 @@ class SoftmaxWithLoss
     if t.size == y.size
       t = t.max_index(axis: 1)
     end
-             
+
     batch_size = y.shape[0]
     
-    #p y
-    #p t
-    
-    e1 = y.slice(@np.new(batch_size).seq, t)
-    e2 = @npm.log(e1 + 1e-7)
-    #p e1
-    #p e2
+    e1 = y.slice(Numo::SFloat.new(batch_size).seq, t)
+    e2 = Numo::NMath.log(e1 + 1e-7)
+
+    p e1
+    p e2
+
     return -1 * e2.sum / batch_size
   end
   
