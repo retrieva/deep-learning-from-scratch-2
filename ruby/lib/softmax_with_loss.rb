@@ -59,9 +59,6 @@ class SoftmaxWithLoss
     e1 = y.slice(Numo::SFloat.new(batch_size).seq, t)
     e2 = Numo::NMath.log(e1 + 1e-7)
 
-    p e1
-    p e2
-
     return -1 * e2.sum / batch_size
   end
   
