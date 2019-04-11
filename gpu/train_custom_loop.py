@@ -1,20 +1,22 @@
 #!/usr/bin/env python
 
 import numpy as np
+import cupy as cp
 from optimizer import SGD
 import spiral
 import matplotlib.pyplot as plt
+plt.switch_backend('agg')
 from two_layer_net import TwoLayerNet
 
 
 if __name__ == '__main__':
-    # 1. hyper parameter settings
+    print("# 1. hyper parameter settings")
     max_epoch = 300
     batch_size = 30
     hidden_size = 10
     learning_rate = 1.0
 
-    # 2. load data and generate model and optimizer
+    print("# 2. load data and generate model and optimizer")
     x, t = spiral.load_data()
     model = TwoLayerNet(input_size=2, hidden_size=hidden_size, output_size=3)
     optimizer = SGD(lr=learning_rate)
@@ -26,6 +28,7 @@ if __name__ == '__main__':
     loss_count = 0
     loss_list = []
 
+    print("#3 start epoch")
     for epoch in range(max_epoch):
         # 3. shuffle data
         idx = np.random.permutation(data_size)
@@ -33,8 +36,8 @@ if __name__ == '__main__':
         t = t[idx]
 
         for iters in range(max_iters):
-            batch_x = x[iters * batch_size: (iters + 1) * batch_size]
-            batch_t = t[iters * batch_size: (iters + 1) * batch_size]
+            batch_x = cp.asarray(x[iters * batch_size: (iters + 1) * batch_size])
+            batch_t = cp.asarray(t[iters * batch_size: (iters + 1) * batch_size])
 
             # 4. process grads and update parameters
             loss = model.forward(batch_x, batch_t)
@@ -52,19 +55,21 @@ if __name__ == '__main__':
                 loss_list.append(avg_loss)
                 total_loss, loss_count = 0, 0
 
-    # plot learning result
+    print("# plot learning result")
     plt.plot(np.arange(len(loss_list)), loss_list, label='train')
     plt.xlabel('iterations (x10)')
     plt.ylabel('loss')
-    plt.show()
+    plt.savefig("loss_gpu.png")
+    plt.cla()
 
     # plot boundary
     h = 0.001
     x_min, x_max = np.min(x[:, 0]) - .1, np.max(x[:, 0]) + .1
     y_min, y_max = np.min(x[:, 1]) - .1, np.max(x[:, 1]) + .1
     xx, yy = np.meshgrid(np.arange(x_min, x_max, h), np.arange(y_min, y_max, h))
-    X = np.c_[xx.ravel(), yy.ravel()].astype(np.float32)
-    score = model.predict(X)
+    X = cp.asarray(np.c_[xx.ravel(), yy.ravel()].astype(np.float32))
+    print(type(X))
+    score = cp.asnumpy(model.predict(X))
     predict_cls = np.argmax(score, axis=1)
     Z = predict_cls.reshape(xx.shape)
     plt.contourf(xx, yy, Z)
@@ -77,4 +82,4 @@ if __name__ == '__main__':
     markers = ['o', 'x', '^']
     for i in range(CLS_NUM):
         plt.scatter(x[i*N:(i+1)*N, 0], x[i*N:(i+1)*N, 1], s=40, marker=markers[i])
-    plt.show()
+    plt.savefig("figure_gpu.png")

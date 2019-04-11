@@ -1,6 +1,6 @@
 # coding: utf-8
 
-import cupy as np
+import cupy as cp
 
 class SGD:
     '''
@@ -8,7 +8,7 @@ class SGD:
     '''
     def __init__(self, lr=0.01):
         self.lr = lr
-        
+
     def update(self, params, grads):
         for i in range(len(params)):
             params[i] -= self.lr * grads[i]
@@ -22,12 +22,12 @@ class Momentum:
         self.lr = lr
         self.momentum = momentum
         self.v = None
-        
+
     def update(self, params, grads):
         if self.v is None:
             self.v = []
             for param in params:
-                self.v.append(np.zeros_like(param))
+                self.v.append(cp.zeros_like(param))
 
         for i in range(len(params)):
             self.v[i] = self.momentum * self.v[i] - self.lr * grads[i]
@@ -42,12 +42,12 @@ class Nesterov:
         self.lr = lr
         self.momentum = momentum
         self.v = None
-        
+
     def update(self, params, grads):
         if self.v is None:
             self.v = []
             for param in params:
-                self.v.append(np.zeros_like(param))
+                self.v.append(cp.zeros_like(param))
 
         for i in range(len(params)):
             self.v[i] *= self.momentum
@@ -63,16 +63,16 @@ class AdaGrad:
     def __init__(self, lr=0.01):
         self.lr = lr
         self.h = None
-        
+
     def update(self, params, grads):
         if self.h is None:
             self.h = []
             for param in params:
-                self.h.append(np.zeros_like(param))
+                self.h.append(cp.zeros_like(param))
 
         for i in range(len(params)):
             self.h[i] += grads[i] * grads[i]
-            params[i] -= self.lr * grads[i] / (np.sqrt(self.h[i]) + 1e-7)
+            params[i] -= self.lr * grads[i] / (cp.sqrt(self.h[i]) + 1e-7)
 
 
 class RMSprop:
@@ -83,17 +83,17 @@ class RMSprop:
         self.lr = lr
         self.decay_rate = decay_rate
         self.h = None
-        
+
     def update(self, params, grads):
         if self.h is None:
             self.h = []
             for param in params:
-                self.h.append(np.zeros_like(param))
+                self.h.append(cp.zeros_like(param))
 
         for i in range(len(params)):
             self.h[i] *= self.decay_rate
             self.h[i] += (1 - self.decay_rate) * grads[i] * grads[i]
-            params[i] -= self.lr * grads[i] / (np.sqrt(self.h[i]) + 1e-7)
+            params[i] -= self.lr * grads[i] / (cp.sqrt(self.h[i]) + 1e-7)
 
 
 class Adam:
@@ -107,19 +107,19 @@ class Adam:
         self.iter = 0
         self.m = None
         self.v = None
-        
+
     def update(self, params, grads):
         if self.m is None:
             self.m, self.v = [], []
             for param in params:
-                self.m.append(np.zeros_like(param))
-                self.v.append(np.zeros_like(param))
-        
+                self.m.append(cp.zeros_like(param))
+                self.v.append(cp.zeros_like(param))
+
         self.iter += 1
-        lr_t = self.lr * np.sqrt(1.0 - self.beta2**self.iter) / (1.0 - self.beta1**self.iter)
+        lr_t = self.lr * cp.sqrt(1.0 - self.beta2**self.iter) / (1.0 - self.beta1**self.iter)
 
         for i in range(len(params)):
             self.m[i] += (1 - self.beta1) * (grads[i] - self.m[i])
             self.v[i] += (1 - self.beta2) * (grads[i]**2 - self.v[i])
-            
-            params[i] -= lr_t * self.m[i] / (np.sqrt(self.v[i]) + 1e-7)
+
+            params[i] -= lr_t * self.m[i] / (cp.sqrt(self.v[i]) + 1e-7)
