@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-import cupy as np
+import numpy as np
 
 
 def load_data(seed=1984):

@@ -1,4 +1,4 @@
-import cupy as np
+import cupy as cp
 
 from layers import Affine, Sigmoid, SoftmaxWithLoss
 
@@ -7,10 +7,10 @@ class TwoLayerNet:
         I, H, O = input_size, hidden_size, output_size
 
         # initialize weight and bias
-        W1 = 0.01 * np.random.randn(I, H)
-        b1 = np.zeros(H)
-        W2 = 0.01 * np.random.randn(H, O)
-        b2 = np.zeros(O)
+        W1 = 0.01 * cp.random.randn(I, H)
+        b1 = cp.zeros(H)
+        W2 = 0.01 * cp.random.randn(H, O)
+        b2 = cp.zeros(O)
 
         # create layer
         self.layers = [
