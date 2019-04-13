@@ -1,9 +1,9 @@
 require "numo/narray"
 
 class SoftmaxWithLoss
-  def initialize
-    @y = nil  # softmaxの出力
-    @t = nil  # 教師ラベル
+  def initialize(y=nil, t=nil)
+    @y = y  # softmaxの出力
+    @t = t  # 教師ラベル
   end
 
   def forward(x, t)
@@ -13,7 +13,7 @@ class SoftmaxWithLoss
     return cross_entropy_error(@y, @t)
   end
 
-  def backward(dout: 1)
+  def backward(dout=1)
     t = @t
     y = @y
     
@@ -28,11 +28,9 @@ class SoftmaxWithLoss
     end
 
     dx = y.copy()
-    dx = dx[t]
-    dx -= 1
-    
+    dx[t].inplace - 1
     dx *= dout
-    dx = dx / t.size
+    dx /= t.size
     
     return dx
   end
