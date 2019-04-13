@@ -22,5 +22,7 @@ class TestSoftmaxWithLoss < Test::Unit::TestCase
   def test_cross_entropy_error
     assert_in_delta 0.51082562376, @target.cross_entropy_error(Numo::SFloat[0.3, 0.6, 0.1], Numo::SFloat[0, 1, 0]), 0.00001
     assert_in_delta 0.10536051565, @target.cross_entropy_error(Numo::SFloat[0.0, 0.1, 0.9], Numo::SFloat[0, 0, 1]), 0.00001
+    assert_in_delta 0.308093069705, @target.cross_entropy_error(Numo::SFloat[[0.3, 0.6, 0.1], [0.0, 0.1, 0.9]], Numo::SFloat[[0, 1, 0], [0, 0, 1]]), 0.00001
   end
+
 end
