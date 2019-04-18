@@ -1,11 +1,10 @@
-
-## このディレクトリについて
+# このディレクトリについて
 
  * 「ゼロから作るDeep Learning 2 自然言語編 読書会」のサンプルをPythonで実装してみるチームの作業ディレクトリです。
 
 ## メモ
- * 環境はUbuntu 16.04.3 LTSを使用
- * PythonはPython 3.5.2
+ * PythonはPython 3.7.3
+ * 依存ライブラリインストールにはpipenvを使っている
 
 ## ToDo
  - [X] ディレクトリを作る
@@ -34,32 +33,20 @@
 ## 開発環境の構築
 
 ```
-$ sudo apt-get install -y python3-numpy
-$
-$ mkdir python
-
-$ # numpyが入っているかどうかの確認
-$ # エラーが出なければOK
-$ python3
-Python 3.5.2 (default, Nov 12 2018, 13:43:14)
-[GCC 5.4.0 20160609] on linux
-Type "help", "copyright", "credits" or "license" for more information.
->>> import numpy
->>>
-```
-
-```
-# mac
-$ brew install pipenv
-$ pipenv install numpy matplotlib
-$ pipenv shell
-
-# mac でpipenv + matplotlib で使う場合は次の設定が必要
-# Pipenv で起きる Matplotlib まわりのエラー - Qiita
-# https://qiita.com/utahkaA/items/ad9aa825832c5909575a
-```
-
-```
 # 公式のソースコードをbookでチェックアウト
 $ git clone https://github.com/oreilly-japan/deep-learning-from-scratch-2.git book
 ```
+
+```
+# for mac
+$ brew install pipenv
+$ cd {CURRENT_DIRECTORY}
+$ pipenv sync
+$ pipenv shell
+```
+
+### 参考
+
+- [Python環境構築ベストプラクティス2019 - ばいおいんふぉっぽいの！](https://www.natsukium.com/blog/2019-02-18/python/)
+- [Pipenv で起きる Matplotlib まわりのエラー - Qiita](https://qiita.com/utahkaA/items/ad9aa825832c5909575a)
+    - mac でpipenv + matplotlib で使う場合は次の設定が必要
