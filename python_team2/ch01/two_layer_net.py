@@ -3,7 +3,7 @@
 import sys
 sys.path.append('..')
 import numpy as np
-from common.layers import Affine, Sigmoid, SoftmaxWithLoss
+from common.layers import Affine, Sigmoid, SoftmaxWithLoss, Relu
 
 class TwoLayerNet:
     def __init__(self, input_size, hidden_size, output_size):
@@ -19,6 +19,7 @@ class TwoLayerNet:
         self.layers = [
             Affine(W1, b1),
             Sigmoid(),
+#            Relu(),
             Affine(W2, b2)
         ]
         self.loss_layer = SoftmaxWithLoss()
