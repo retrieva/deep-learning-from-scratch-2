@@ -1,31 +1,36 @@
 require 'numo/narray'
 
 class SoftmaxWithLoss
-  def initialize
-    @y = nil  # softmaxの出力
-    @t = nil  # 教師ラベル
+  def initialize(y=nil, t=nil)
+    @y = y  # softmaxの出力
+    @t = t  # 教師ラベル
   end
 
   def forward(x, t)
     @t = t
     @y = softmax(x)
-
-    # 教師ラベルがone-hotベクトルの場合、正解のインデックスに変換
-    if @t.size == @y.size
-      @t = @t.max_index(axis: 1)
-    end
     
     return cross_entropy_error(@y, @t)
   end
 
-  def backward(dout: 1)
-    batch_size = @t.shape[0]
+  def backward(dout=1)
+    t = @t
+    y = @y
     
-    dx = @y.copy()
-    dx.slice(0...batch_size, @t) -= 1
-    
+    if y.ndim == 1
+      t = t.reshape(1, t.size)
+      y = y.reshape(1, y.size)
+    end
+
+    # 教師データがone-hot-vectorの場合、正解ラベルのインデックスに変換
+    if t.size == y.size
+      t = t.max_index(axis: 1)
+    end
+
+    dx = y.copy()
+    dx[t].inplace - 1
     dx *= dout
-    dx = dx / batch_size
+    dx /= t.size
     
     return dx
   end
@@ -37,7 +42,8 @@ class SoftmaxWithLoss
       x /= x.sum(axis: 1, keepdims: true)
     elsif x.ndim == 1
       x = x - x.max
-      x = Numo::NMath.exp(x) / Numo::NMath.exp(x).sum
+      x = Numo::NMath.exp(x)
+      x /= x.sum
     end
 
     return x
@@ -48,18 +54,13 @@ class SoftmaxWithLoss
       t = t.reshape(1, t.size)
       y = y.reshape(1, y.size)
     end
-        
+    
     # 教師データがone-hot-vectorの場合、正解ラベルのインデックスに変換
     if t.size == y.size
       t = t.max_index(axis: 1)
     end
 
-    batch_size = y.shape[0]
-    
-    e1 = y.slice(0...batch_size, t)
-    e2 = Numo::NMath.log(e1 + 1e-7)
-
-    return -1 * e2.sum / batch_size
+    return -1 * Numo::NMath.log(y[t] + 1e-7).sum / t.size
   end
   
   def params
