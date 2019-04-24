@@ -2,7 +2,8 @@
 
 from optimizer import SGD
 from trainer import Trainer
-from spiral import spiral
+import spiral
+import cupy as cp
 from two_layer_net import TwoLayerNet
 
 
@@ -13,9 +14,11 @@ if __name__ == '__main__':
     learning_rate = 1.0
 
     x, t = spiral.load_data()
+    x_cp = cp.array(x)
+    t_cp = cp.array(t)
     model = TwoLayerNet(input_size=2, hidden_size=hidden_size, output_size=3)
     optimizer = SGD(lr=learning_rate)
 
     trainer = Trainer(model, optimizer)
-    trainer.fit(x, t, max_epoch, batch_size, eval_interval=10)
+    trainer.fit(x_cp, t_cp, max_epoch, batch_size, eval_interval=5)
     trainer.plot()
