@@ -68,7 +68,6 @@ if __name__ == '__main__':
     y_min, y_max = np.min(x[:, 1]) - .1, np.max(x[:, 1]) + .1
     xx, yy = np.meshgrid(np.arange(x_min, x_max, h), np.arange(y_min, y_max, h))
     X = cp.asarray(np.c_[xx.ravel(), yy.ravel()].astype(np.float32))
-    print(type(X))
     score = cp.asnumpy(model.predict(X))
     predict_cls = np.argmax(score, axis=1)
     Z = predict_cls.reshape(xx.shape)
