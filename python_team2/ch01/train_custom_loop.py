@@ -69,10 +69,12 @@ if __name__ == '__main__':
     plotResults(model, loss_list, x)
 
 
-    ## 学習試行2
-    #
-    ## モデルとオプティマイザの生成
-    #learning_rate = 2.0
+    # 学習試行2
+
+    # モデルとオプティマイザの生成
+    #hidden_size = 60
+    #learning_rate = 0.5
+    #max_epoch = 500
     #optimizer = SGD(lr=learning_rate)
     #model = TwoLayerNet(input_size=2, hidden_size=hidden_size, output_size=3)
     #
