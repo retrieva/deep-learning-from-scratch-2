@@ -18,8 +18,7 @@ class Affine
   def backward(dout)
     weight, _ = @params
     dx = dout.dot(weight.transpose)
-    xT = @x.transpose
-    dW = xT.dot(dout)
+    dW = @x.transpose.dot(dout)
     db = dout.sum(axis: 0)
 
     @grads[0] = dW

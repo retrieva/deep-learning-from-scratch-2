@@ -1,4 +1,9 @@
+require_relative '../lib/affine'
+require_relative '../lib/sigmoid'
+require_relative '../lib/softmax_with_loss'
+
 class TwoLayersNet
+  attr_reader :layers, :loss_layer, :params, :grads
 
   def initialize(input_size:, hidden_size:, output_size:)
     w1 = 0.01 * Numo::SFloat.new(input_size, hidden_size).rand
