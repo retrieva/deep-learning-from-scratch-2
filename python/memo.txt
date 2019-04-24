@@ -12,9 +12,15 @@
  - [X]numpyのインストール
  - [ ]何を作るか確認する
    - [X]シグモイド関数(P.13)
-   - [ ]シグモイド関数をクラス化(P.15)
-   - [ ]Affineレイヤの実装(P.15) 
-   - [ ]TwoLayerNetの作成(P.17)
+   - [X]シグモイド関数をクラス化(P.15)
+   - [X]Affineレイヤの実装(P.15) 
+   - [X]TwoLayerNetの作成(P.17)
+   - [ ]MatMulの作成(p.33)
+   - [ ]Sigmoidにbackwardを追加する(p.36)
+   - [ ]Affineにbackwardを追加する(p.37)
+   - [ ]Softmax with Lossレイヤの確認(p.38)
+   - [ ]SGDを作成する(p.40)
+   - [ ]ニューラルネットワークの実装(p.43)
    - [ ]
 
 ## 開発環境の構築
