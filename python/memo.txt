@@ -1,27 +1,30 @@
 
 ## このディレクトリについて
 
- * 「ゼロから作るDeep Learning 2 自然言語編 読書会」のサンプルをPythonで実装してみるチームの作業ディレクトリです。
+* 「ゼロから作るDeep Learning 2 自然言語編 読書会」のサンプルをPythonで実装してみるチームの作業ディレクトリです。
 
 ## メモ
- * 環境はUbuntu 16.04.3 LTSを使用
- * PythonはPython 3.5.2
+
+* 環境はUbuntu 16.04.3 LTSを使用
+* PythonはPython 3.5.2
+* 自前実装しつつ、一部は教科書のリポジトリから持ってきている
+  * 教科書から持ってきたものは upstream/ ディレクトリ以下に置いてある
 
 ## ToDo
- - [X]ディレクトリを作る
- - [X]numpyのインストール
- - [ ]何を作るか確認する
-   - [X]シグモイド関数(P.13)
-   - [X]シグモイド関数をクラス化(P.15)
-   - [X]Affineレイヤの実装(P.15) 
-   - [X]TwoLayerNetの作成(P.17)
-   - [ ]MatMulの作成(p.33)
-   - [ ]Sigmoidにbackwardを追加する(p.36)
-   - [ ]Affineにbackwardを追加する(p.37)
-   - [ ]Softmax with Lossレイヤの確認(p.38)
-   - [ ]SGDを作成する(p.40)
-   - [ ]ニューラルネットワークの実装(p.43)
-   - [ ]
+- [X]ディレクトリを作る
+- [X]numpyのインストール
+- [ ]何を作るか確認する
+  - [X]シグモイド関数(P.13)
+  - [X]シグモイド関数をクラス化(P.15)
+  - [X]Affineレイヤの実装(P.15) 
+  - [X]TwoLayerNetの作成(P.17)
+  - [x]MatMulの作成(p.33)
+  - [x]Sigmoidにbackwardを追加する(p.36)
+  - [x]Affineにbackwardを追加する(p.37)
+  - [x]Softmax with Lossレイヤの確認(p.38)
+  - [x]SGDを作成する(p.40)
+  - [x]ニューラルネットワークの実装(p.43)
+- [ ]
 
 ## 開発環境の構築
 
@@ -39,4 +42,4 @@ Type "help", "copyright", "credits" or "license" for more information.
 >>> import numpy
 >>>
 ```
- 
+
