@@ -1,4 +1,4 @@
-require "numo/narray"
+require 'numo/narray'
 
 class SoftmaxWithLoss
   def initialize(y=nil, t=nil)
