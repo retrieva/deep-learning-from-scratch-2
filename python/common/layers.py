@@ -15,7 +15,7 @@ class MatMul:
 		W, = self.params
 		dx = np.dot(dout, W.transport())
 		dW = np.dot(self.x.T, dout)
-		grads[0] = dW.copy()
+		self.grads[0] = dW.copy()
 		return dx
 
 # 他の章でも使うようなので ch1/forward_net.py からコピーしてbackwardを実装
