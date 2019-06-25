@@ -1,8 +1,17 @@
 GEM
   remote: https://rubygems.org/
   specs:
+    csv (3.1.1)
+    irb (1.0.0)
+    matplotlib (1.0.0)
+      pycall (>= 1.0.0)
     numo-narray (0.9.1.4)
     power_assert (1.1.4)
+    pycall (1.2.1)
+    red-datasets (0.0.8)
+      csv (>= 3.0.5)
+      rubyzip
+    rubyzip (1.2.3)
     test-unit (3.3.2)
       power_assert
 
@@ -10,7 +19,10 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  irb
+  matplotlib
   numo-narray
+  red-datasets
   test-unit
 
 BUNDLED WITH
