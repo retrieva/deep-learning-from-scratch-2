@@ -6,6 +6,7 @@ class Spiral < Datasets::Dataset
   N = 100  # クラスごとのサンプル数
   DIM = 2  # データの要素数
   CLS_NUM = 3  # クラス数
+  attr_reader :x, :t
 
   def initialize(seed=1984)
     super()
