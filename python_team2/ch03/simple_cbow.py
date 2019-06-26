@@ -27,7 +27,6 @@ class SimpleCBOW:
         self.word_vecs = W_in
 
     def forward(self, contexts, target):
-        print(contexts[:, 0])
         h0 = self.in_layer0.forward(contexts[:, 0])
         h1 = self.in_layer1.forward(contexts[:, 1])
         h = (h0 + h1) * 0.5
@@ -35,9 +34,17 @@ class SimpleCBOW:
         loss = self.loss_layer.forward(score, target)
         return loss
 
+    def backward(self, dout=1):
+        ds = self.loss_layer.backward(dout)
+        da = self.out_layer.backward(ds)
+        da *= 0.5
+        self.in_layer0.backward(da)
+        self.in_layer1.backward(da)
+        return None
 
-# if __name__ == '__main__':
-cbow = SimpleCBOW(5, 3)
-contexts = np.array([[1, 0, 0,0,0],[0,1,  0,0,0]])
-target = np.array([0,0,0,1,0])
-print(cbow.forward(contexts.T,target))
+
+if __name__ == '__main__':
+    cbow = SimpleCBOW(5, 3)
+    contexts = np.array([[1, 0, 0,0,0],[0,1,0,0,0]])
+    target = np.array([[0,0,0,1,0]])
+    print(cbow.forward(contexts.T,target))
