@@ -16,7 +16,7 @@ model = TwoLayersNet.new(input_size: 2, hidden_size: hidden_size, output_size: 3
 optimizer = SGD.new(learning_rate)
 
 data_size = x.shape.first # => 300
-max_iters = (data_size / batch_size).floor
+max_iters = (data_size / batch_size).floor # => 10
 total_loss = 0
 loss_count = 0
 loss_list = []
