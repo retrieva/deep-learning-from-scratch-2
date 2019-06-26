@@ -10,8 +10,8 @@ learning_rate = 1.0
 
 # 2: データ読み込み、モデルとオプティマイザ生成
 samples = Spiral.new
-x = samples.x
-t = samples.t
+x = samples.x # .shape => [300, 2]
+t = samples.t # .shape => [300, 3]
 model = TwoLayersNet.new(input_size: 2, hidden_size: hidden_size, output_size: 3)
 optimizer = SGD.new(learning_rate)
 

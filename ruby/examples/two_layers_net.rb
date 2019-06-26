@@ -1,6 +1,7 @@
 require_relative '../lib/affine'
 require_relative '../lib/sigmoid'
 require_relative '../lib/softmax_with_loss'
+require 'byebug'
 
 class TwoLayersNet
   attr_reader :layers, :loss_layer

@@ -66,8 +66,8 @@ end
 
 def remove_duplicate(_params, _grads)
   # パラメータ配列中の重複する重みをひとつに集約し、その重みに対応する勾配を加算する
-  params = _params.map(&:dup)
-  grads = _grads.map(&:dup)
+  params = _params.clone
+  grads = _grads.clone
 
   while true do
     find_flg = false
@@ -77,13 +77,13 @@ def remove_duplicate(_params, _grads)
         if params[i] && params[j] 
           if params[i] == params[j]
             # 重みを共有する場合
-            grads[i, true] += grads[j, true] # 勾配を加算
+            grads[i].inplace + grads[j] # 勾配を加算
             find_flg = true
             params.delete_at(j)
             grads.delete_at(j)
           elsif params[i].ndim == 2 && params[j].ndim == 2 && params[i].transpose.shape == params[j].transpose.shape && params[i].transpose == params[j]
             # 転置行列として重みを共有する場合 (weight tying)
-            grads[i] += grads[j].transpose
+            grads[i].inplace + grads[j].transpose
             find_flg = true
             params.delete_at(j)
             grads.delete_at(j)
