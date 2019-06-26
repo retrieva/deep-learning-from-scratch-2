@@ -59,7 +59,6 @@ class Trainer
     plt.plot(x, @loss_list, label: 'train')
     plt.xlabel("iterations (x#{@eval_interval})")
     plt.ylabel('loss')
-    plt.savefig('spiral_trained.png')
     plt.show
   end
 end
