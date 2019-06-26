@@ -16,7 +16,7 @@ class MatMul:
     def backward(self, dout):
         W, = self.params
         dx = cp.dot(dout, W.T)
-        dW = cp.dot(x.T, dout)
+        dW = cp.dot(self.x.T, dout)
         self.grads[0][...] = dW
         return dx
 

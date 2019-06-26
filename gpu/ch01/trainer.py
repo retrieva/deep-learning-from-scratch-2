@@ -62,7 +62,8 @@ class Trainer:
         plt.plot(x, self.loss_list, label='train')
         plt.xlabel('iterations (x' + str(self.eval_interval) + ')')
         plt.ylabel('loss')
-        plt.show()
+        plt.savefig('figure.png')
+        #plt.show()
 
 
 class RnnlmTrainer:
