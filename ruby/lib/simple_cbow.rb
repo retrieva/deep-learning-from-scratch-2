@@ -3,6 +3,8 @@ require "mat_mul"
 require "softmax_with_loss"
 
 class SimpleCBow
+  attr_reader :word_vecs
+
   def initialize(vocab_size, hidden_size)
     v, h = vocab_size, hidden_size
 
@@ -33,5 +35,14 @@ class SimpleCBow
     score = @out_layer.forward(h)
     loss = @loss_layer.forward(score, target)
     return loss
+  end
+
+  def backward(dout=1)
+    ds = @loss_layer.backward(dout)
+    da = @out_layer.backward(ds)
+    da *= 0.5
+    @in_layer1.backward(da)
+    @in_layer0.backward(da)
+    nil
   end
 end
