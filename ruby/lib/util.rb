@@ -75,3 +75,14 @@ def convert_one_hot(corpus, vocab_size)
 
   one_hot
 end
+
+def get_at_dim_index(x, dim_no, idxs)
+  ind = dim_full_indices(x, dim_no, idxs)
+  x[*ind]
+end
+
+def dim_full_indices(x, dim_no, idxs)
+  ind = Array.new(x.ndim, true)
+  ind[dim_no] = idxs
+  ind
+end
