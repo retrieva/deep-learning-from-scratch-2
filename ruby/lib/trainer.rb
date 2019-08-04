@@ -40,7 +40,7 @@ class Trainer
         loss_count += 1
 
         # 評価
-        if !eval_interval.nil? && (iters + 1) % eval_interval == 0
+        if !eval_interval.nil? && iters % eval_interval == 0
           avg_loss = total_loss / loss_count
           elapsed_time = Time.now - start_time
           puts "| epoch #{@current_epoch + 1} | iter #{iters + 1} / #{max_iters} | time #{elapsed_time} | loss #{avg_loss}"
