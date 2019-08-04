@@ -29,8 +29,8 @@ class SimpleCBow
   end
 
   def forward(contexts, target)
-    h0 = @in_layer0.forward(Numo::NArray[contexts[0]])
-    h1 = @in_layer1.forward(Numo::NArray[contexts[1]])
+    h0 = @in_layer0.forward(contexts[true, 0, true])
+    h1 = @in_layer1.forward(contexts[true, 1, true])
     h = (h0 + h1) * 0.5
     score = @out_layer.forward(h)
     loss = @loss_layer.forward(score, target)
