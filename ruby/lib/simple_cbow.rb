@@ -3,7 +3,7 @@ require "mat_mul"
 require "softmax_with_loss"
 
 class SimpleCBow
-  attr_reader :word_vecs
+  attr_reader :params, :grads, :word_vecs
 
   def initialize(vocab_size, hidden_size)
     v, h = vocab_size, hidden_size
