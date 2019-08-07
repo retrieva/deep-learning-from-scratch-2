@@ -18,7 +18,7 @@ class MatMul
     w = @params.first
     dx = dout.dot(w.transpose)
     dw = @x.transpose.dot(dout)
-    @grads[0] = dw
+    @grads[0].store(dw)
     dx
   end
 end

@@ -22,13 +22,13 @@ class Trainer
       @current_epoch += 1
       # Shuffle
       idx = Numo::Int64.new(data_size).store((0 ... data_size).to_a.shuffle)
-      ex = x[idx, true]
-      et = t[idx, true]
+      ex = get_at_dim_index(x, 0, idx)
+      et = get_at_dim_index(t, 0, idx)
 
       max_iters.times do |iters|
         batch_range = (iters * batch_size) ... ((iters + 1) * batch_size)
-        batch_x = ex[batch_range, true]
-        batch_t = et[batch_range, true]
+        batch_x = get_at_dim_index(ex, 0, batch_range)
+        batch_t = get_at_dim_index(et, 0, batch_range)
 
         # 勾配をもとめ、Optimizerでパラメータを更新
         loss = @model.forward(batch_x, batch_t)
@@ -40,7 +40,7 @@ class Trainer
         loss_count += 1
 
         # 評価
-        if !eval_interval.nil? && (iters + 1) % eval_interval == 0
+        if !eval_interval.nil? && iters % eval_interval == 0
           avg_loss = total_loss / loss_count
           elapsed_time = Time.now - start_time
           puts "| epoch #{@current_epoch + 1} | iter #{iters + 1} / #{max_iters} | time #{elapsed_time} | loss #{avg_loss}"
