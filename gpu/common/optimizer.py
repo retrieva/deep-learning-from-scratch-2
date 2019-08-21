@@ -1,4 +1,5 @@
 import numpy as np
+import cupy as cp
 
 class SGD:
     def __init__(self, lr = 0.01):
@@ -20,11 +21,11 @@ class AdaGrad:
         if self.h is None:
             self.h = []
             for param in params:
-                self.h.append(np.zeros_like(param))
+                self.h.append(cp.zeros_like(param))
 
         for i in range(len(params)):
             self.h[i] += grads[i] * grads[i]
-            params[i] -= self.lr * grads[i] / (np.sqrt(self.h[i]) + 1e-7)
+            params[i] -= self.lr * grads[i] / (cp.sqrt(self.h[i]) + 1e-7)
 
 class Adam:
     '''
@@ -42,14 +43,14 @@ class Adam:
         if self.m is None:
             self.m, self.v = [], []
             for param in params:
-                self.m.append(np.zeros_like(param))
-                self.v.append(np.zeros_like(param))
+                self.m.append(cp.zeros_like(param))
+                self.v.append(cp.zeros_like(param))
         
         self.iter += 1
-        lr_t = self.lr * np.sqrt(1.0 - self.beta2**self.iter) / (1.0 - self.beta1**self.iter)
+        lr_t = self.lr * cp.sqrt(1.0 - self.beta2**self.iter) / (1.0 - self.beta1**self.iter)
 
         for i in range(len(params)):
             self.m[i] += (1 - self.beta1) * (grads[i] - self.m[i])
             self.v[i] += (1 - self.beta2) * (grads[i]**2 - self.v[i])
             
-            params[i] -= lr_t * self.m[i] / (np.sqrt(self.v[i]) + 1e-7)
+            params[i] -= lr_t * self.m[i] / (cp.sqrt(self.v[i]) + 1e-7)
