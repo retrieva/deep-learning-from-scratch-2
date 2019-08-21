@@ -1,6 +1,7 @@
 require "numo/narray"
 require "mat_mul"
 require "softmax_with_loss"
+require "embedding"
 
 class SimpleCBow
   attr_reader :params, :grads, :word_vecs
@@ -13,8 +14,10 @@ class SimpleCBow
     w_out = 0.01 * Numo::DFloat.new(h, v).rand
 
     # レイヤの生成
-    @in_layer0 = MatMul.new(w_in)
-    @in_layer1 = MatMul.new(w_in)
+    @in_layer0 = Embedding.new(w_in)
+    @in_layer1 = Embedding.new(w_in)
+    # @in_layer0 = MatMul.new(w_in)
+    # @in_layer1 = MatMul.new(w_in)
     @out_layer = MatMul.new(w_out)
     @loss_layer = SoftmaxWithLoss.new
 
@@ -29,8 +32,8 @@ class SimpleCBow
   end
 
   def forward(contexts, target)
-    h0 = @in_layer0.forward(contexts[true, 0, true])
-    h1 = @in_layer1.forward(contexts[true, 1, true])
+    h0 = @in_layer0.forward(contexts[true, 0])
+    h1 = @in_layer1.forward(contexts[true, 1])
     h = (h0 + h1) * 0.5
     score = @out_layer.forward(h)
     loss = @loss_layer.forward(score, target)
