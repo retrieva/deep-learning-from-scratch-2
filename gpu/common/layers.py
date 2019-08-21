@@ -68,9 +68,9 @@ class SigmoidWithLoss:
 
     def forward(self, x, t):
         self.t = t
-        self.y = 1 / (1 + np.exp(-x))
+        self.y = 1 / (1 + cp.exp(-x))
 
-        self.loss = cross_entropy_error(np.c_[1 - self.y, self.y], self.t)
+        self.loss = cross_entropy_error(cp.c_[1 - self.y, self.y], self.t)
 
         return self.loss
 
