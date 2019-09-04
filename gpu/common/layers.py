@@ -1,38 +1,86 @@
 import numpy as np
+import cupy as cp
 from common.functions import softmax, cross_entropy_error
+
 
 class MatMul:
     def __init__(self, W):
         self.params = [W]
-        self.grads = [np.zeros_like(W)]
+        self.grads = [cp.zeros_like(W)]
         self.x = None
 
     def forward(self, x):
         W, = self.params
-        out = np.dot(x, W)
+        out = cp.dot(x, W)
         self.x = x
         return out
 
     def backward(self, dout):
         W, = self.params
-        dx = np.dot(dout, W.T)
-        dW = np.dot(self.x.T, dout)
+        dx = cp.dot(dout, W.T)
+        dW = cp.dot(self.x.T, dout)
         self.grads[0][...] = dW
         return dx
 
-    # 他の章でも使うようなので ch1/forward_net.py からコピーしてbackwardを実装
+
+# 他の章でも使うようなので ch1/forward_net.py からコピーしてbackwardを実装
 class Sigmoid:
-	def __init__(self):
-		self.params = []
-		self.grads = []
+    def __init__(self):
+        self.params = []
+        self.grads = []
 
-	def forward(self, x):
-		self.out = 1 / (1 + np.exp(-x))
-		return self.out
+    def forward(self, x):
+        self.out = 1 / (1 + cp.exp(-x))
+        return self.out
 
-	def backward(self, dout):
-		dx = dout * (1 - self.out) * self.out
-		return dx
+    def backward(self, dout):
+        dx = dout * (1 - self.out) * self.out
+        return dx
+
+
+class SigmoidWithLoss:
+    def __init__(self):
+        self.params, self.grads = [], []
+        self.loss = None
+        self.y = None  # sigmoidの出力
+        self.t = None  # 教師データ
+
+    def forward(self, x, t):
+        self.t = t
+        self.y = 1 / (1 + cp.exp(-x))
+
+        self.loss = cross_entropy_error(cp.c_[1 - self.y, self.y], self.t)
+
+        return self.loss
+
+    def backward(self, dout=1):
+        batch_size = self.t.shape[0]
+
+        dx = (self.y - self.t) * dout / batch_size
+        return dx
+
+class SigmoidWithLoss:
+    def __init__(self):
+        self.params, self.grads = [], []
+        self.loss = None
+        self.y = None  # sigmoidの出力
+        self.t = None  # 教師データ
+
+    def forward(self, x, t):
+        self.t = t
+        self.y = 1 / (1 + cp.exp(-x))
+
+        self.loss = cross_entropy_error(cp.c_[1 - self.y, self.y], self.t)
+
+        return self.loss
+
+    def backward(self, dout=1):
+        batch_size = self.t.shape[0]
+
+        dx = (self.y - self.t) * dout / batch_size
+        return dx
+
+
 
 
 class Affine:
@@ -41,7 +89,7 @@ class Affine:
 		self.params = [W, b]
 		self.grads = [
 		  self.mm.grads[0],  # modelが初期化した直後のgradsを参照するため、MatMulのgradsを参照するようにする
-		  np.zeros_like(b),
+		  cp.zeros_like(b),
 		]
 
 	def forward(self, x):
@@ -51,7 +99,7 @@ class Affine:
 
 	def backward(self, dout):
 		dx = self.mm.backward(dout)
-		db = np.sum(dout, axis = 0)
+		db = cp.sum(dout, axis = 0)
 		# self.grads[0] はmm.backwardで更新される
 		self.grads[1] = db.copy()
 		return dx
@@ -61,10 +109,10 @@ class TwoLayerNet:
 		I, H, O = input_size, hidden_size, output_size
 
 		# 重みとバイアスの初期化
-		W1 = np.random.randn(I, H)
-		b1 = np.random.randn(H)
-		W2 = np.random.randn(H, O)
-		b2 = np.random.randn(O)
+		W1 = cp.random.randn(I, H)
+		b1 = cp.random.randn(H)
+		W2 = cp.random.randn(H, O)
+		b2 = cp.random.randn(O)
 
 		# レイヤの生成
 		self.layers = [
@@ -96,7 +144,7 @@ class Softmax:
 
     def backward(self, dout):
         dx = self.out * dout
-        sumdx = np.sum(dx, axis=1, keepdims=True)
+        sumdx = cp.sum(dx, axis=1, keepdims=True)
         dx -= self.out * sumdx
         return dx
 
@@ -122,17 +170,17 @@ class SoftmaxWithLoss:
         batch_size = self.t.shape[0]
 
         dx = self.y.copy()
-        dx[np.arange(batch_size), self.t] -= 1
+        dx[cp.arange(batch_size), self.t] -= 1
         dx *= dout
         dx = dx / batch_size
 
         return dx
 
-
+    
 class Embedding:
     def __init__(self, W):
         self.params = [W]
-        self.grads = [np.zero_like(W)]
+        self.grads = [cp.zeros_like(W)]
         self.idx = None
 
     def forward(self, idx):
@@ -144,5 +192,5 @@ class Embedding:
     def backward(self, dout):
         dW, = self.grads
         dW[...] = 0
-        np.add.at(dW, self.idx, dout)
+        cp.cupyx.scatter_add(dW, self.idx, dout)
         return None
