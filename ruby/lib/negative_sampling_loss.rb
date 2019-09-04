@@ -61,7 +61,7 @@ Rand = Random.new
 
 def rws_heap(items)
   h = [nil]
-  items.each do |w, v|
+  items.each do |v, w|
     h.append(Node.new(w, v, w))
   end
 
