@@ -22,7 +22,13 @@ class TestRnn < Test::Unit::TestCase
   end
 
   def test_forward
-    x = Numo::SFloat[0.4, 0.6] # D
+    x = Numo::SFloat[
+        [0.1, 0.4],
+        [0.7, 0.5],
+        [0.3, 0.5],
+        [0.3, 0.8],
+        [0.1, 0.9]
+    ] # N x D
     h_prev = Numo::SFloat[
         [0.3, 0.5],
         [0.1, 0.4],
@@ -32,14 +38,57 @@ class TestRnn < Test::Unit::TestCase
     ] # N x H
     actual = @target.forward(x, h_prev)
     expected = [
-      [0.544127, 0.824272],
-      [0.4777, 0.777888],
-      [0.64693, 0.848284],
-      [0.5649, 0.893698],
-      [0.492988, 0.706419]
+        [0.446244, 0.739783],
+        [0.462117, 0.769867],
+        [0.610677, 0.817754],
+        [0.623065, 0.918602],
+        [0.578363, 0.785664]
     ]
     #assert_equal expected, actual
 
+    assert_delta_array(expected, actual)
+  end
+
+  def test_backward
+    dh_next = Numo::SFloat[
+        [0.3, 0.5],
+        [0.1, 0.4],
+        [0.7, 0.5],
+        [0.3, 0.8],
+        [0.2, 0.2]
+    ] # N x H
+    x = Numo::SFloat[
+        [0.1, 0.4],
+        [0.7, 0.5],
+        [0.3, 0.5],
+        [0.3, 0.8],
+        [0.1, 0.9]
+    ] # N x D
+    h_prev = Numo::SFloat[
+        [0.3, 0.5],
+        [0.1, 0.4],
+        [0.7, 0.5],
+        [0.3, 0.8],
+        [0.2, 0.2]
+    ] # N x H
+    @target.forward(x, h_prev)
+    actual_dx, actual_dh_prev = @target.backward(dh_next)
+
+    assert_delta_array([[0.0692981, 0.301218],
+                        [0.0404489, 0.16966],
+                        [0.077023, 0.351987],
+                        [0.043341, 0.191718],
+                        [0.0286192, 0.127787]], actual_dx)
+    assert_delta_array([[0.141376, 0.22775],
+                        [0.0640424, 0.154494],
+                        [0.208708, 0.19297],
+                        [0.0984021, 0.130797],
+                        [0.068549, 0.0822017]], actual_dh_prev)
+  end
+
+  # expected: array
+  # acutal: Numo::NArray
+  def assert_delta_array(expected, actual)
     actual.to_a.zip(expected).each do |actual_row, expected_row|
       actual_row.zip(expected_row) do |actual_value, expected_value|
         assert_in_delta actual_value, expected_value, 0.00001
