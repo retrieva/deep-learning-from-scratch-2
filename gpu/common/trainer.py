@@ -1,10 +1,10 @@
 # coding: utf-8
 import sys
-sys.path.append('..')
 import numpy
 import time
 import matplotlib.pyplot as plt
-from common.np import *  # import numpy as np
+import cupy as cp
+sys.path.append('..')
 from common.util import clip_grads
 
 
@@ -76,8 +76,8 @@ class RnnlmTrainer:
         self.current_epoch = 0
 
     def get_batch(self, x, t, batch_size, time_size):
-        batch_x = np.empty((batch_size, time_size), dtype='i')
-        batch_t = np.empty((batch_size, time_size), dtype='i')
+        batch_x = cp.empty((batch_size, time_size), dtype='i')
+        batch_t = cp.empty((batch_size, time_size), dtype='i')
 
         data_size = len(x)
         jump = data_size // batch_size
@@ -118,7 +118,7 @@ class RnnlmTrainer:
 
                 # パープレキシティの評価
                 if (eval_interval is not None) and (iters % eval_interval) == 0:
-                    ppl = np.exp(total_loss / loss_count)
+                    ppl = cp.exp(-total_loss / loss_count)
                     elapsed_time = time.time() - start_time
                     print('| epoch %d |  iter %d / %d | time %d[s] | perplexity %.2f'
                           % (self.current_epoch + 1, iters + 1, max_iters, elapsed_time, ppl))
@@ -158,7 +158,7 @@ def remove_duplicate(params, grads):
                     grads.pop(j)
                 # 転置行列として重みを共有する場合（weight tying）
                 elif params[i].ndim == 2 and params[j].ndim == 2 and \
-                     params[i].T.shape == params[j].shape and np.all(params[i].T == params[j]):
+                     params[i].T.shape == params[j].shape and cp.all(params[i].T == params[j]):
                     grads[i] += grads[j].T
                     find_flg = True
                     params.pop(j)
