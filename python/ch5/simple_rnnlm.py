@@ -2,7 +2,7 @@ import sys
 sys.path.append('..')
 import numpy as np 
 from common.time_layers import * 
-from np.random import randn as rn
+from numpy.random import randn as rn
 
 class SimpleRnnlm:
     def __init__(self, vocab_size, wordvec_size, hidden_size):
@@ -19,8 +19,8 @@ class SimpleRnnlm:
 
         # レイヤの生成
         self.layers = [
-            TimeEmbedding(embed_W)
-            TimeRNN(rnn_Wx, rnn_Wh, rnn_b, stateful=True)
+            TimeEmbedding(embed_W),
+            TimeRNN(rnn_Wx, rnn_Wh, rnn_b, stateful=True),
             TimeAffine(affine_W, affine_b)
         ]
         self.loss_layer = TimeSoftmaxWithLoss()
