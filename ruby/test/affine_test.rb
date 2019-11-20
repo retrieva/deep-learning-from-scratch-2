@@ -1,8 +1,8 @@
-require "test/unit"
-require "./lib/affine"
+require "test_helper"
+require "affine"
 require "numo/narray"
 
-class TestAffine < Test::Unit::TestCase
+class AffineTest < Test::Unit::TestCase
   def setup
     @weight = Numo::SFloat[[1,2,3],[5,8,13]] # input: 2, hidden: 3
     @bias   = Numo::SFloat[0.2, 0.3, 0.4]

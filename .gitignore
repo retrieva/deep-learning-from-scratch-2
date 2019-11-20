@@ -1,2 +1,3 @@
 ruby/.idea/*
 ruby/vendor/*
+*.swp

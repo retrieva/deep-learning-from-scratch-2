@@ -1,8 +1,8 @@
-require "test/unit"
-require "./lib/rnn"
+require "test_helper"
+require "rnn"
 require "numo/narray"
 
-class TestRnn < Test::Unit::TestCase
+class RnnTest < Test::Unit::TestCase
   def setup
     # N = 5, D = 2, H = 2
     @wx = Numo::SFloat[[0.1, 0.2], [0.5, 0.8]] # D x H
@@ -84,15 +84,5 @@ class TestRnn < Test::Unit::TestCase
                         [0.208708, 0.19297],
                         [0.0984021, 0.130797],
                         [0.068549, 0.0822017]], actual_dh_prev)
-  end
-
-  # expected: array
-  # acutal: Numo::NArray
-  def assert_delta_array(expected, actual)
-    actual.to_a.zip(expected).each do |actual_row, expected_row|
-      actual_row.zip(expected_row) do |actual_value, expected_value|
-        assert_in_delta actual_value, expected_value, 0.00001
-      end
-    end
   end
 end

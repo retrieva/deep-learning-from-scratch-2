@@ -17,6 +17,7 @@ GEM
       byebug (~> 11.0)
       pry (~> 0.10)
     pycall (1.2.1)
+    rake (13.0.1)
     red-datasets (0.0.8)
       csv (>= 3.0.5)
       rubyzip
@@ -32,8 +33,9 @@ DEPENDENCIES
   matplotlib
   numo-narray
   pry-byebug
+  rake
   red-datasets
   test-unit
 
 BUNDLED WITH
-   2.0.1
+   2.0.2

@@ -1,8 +1,8 @@
-require "test/unit"
+require "test_helper"
 require "numo/narray"
-require "./lib/optimizer"
+require "optimizer"
 
-class TestSGD < Test::Unit::TestCase
+class SGDTest < Test::Unit::TestCase
   def setup
     @lr = 0.02
     @sgd = SGD.new(@lr)

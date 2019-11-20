@@ -1,8 +1,8 @@
-require "test/unit"
-require_relative "../examples/two_layers_net"
+require "test_helper"
+require_relative "../examples/ch01/two_layers_net"
 require "numo/narray"
 
-class TestTwoLayersNet < Test::Unit::TestCase
+class TwoLayersNetTest < Test::Unit::TestCase
   def setup
     @target = TwoLayersNet.new(input_size: 3, hidden_size: 5, output_size: 4)
   end
