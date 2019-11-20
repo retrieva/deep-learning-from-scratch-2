@@ -37,4 +37,37 @@ offsets = [i * jump for i in range(batch_size)]
 
 for epoch in range(max_epoch):
     for iter_ in range(max_iters):
+        batch_x = np.empty((batch_size, time_size), dtype='i')
+        batch_t = np.empty((batch_size, time_size), dtype='i')
 
+        # ミニバッチの取得
+        for t in range(time_size):
+            for i, offset in enumerate(offsets):
+                batch_x[i, t] = xs[(offset + time_idx) % data_size]
+                batch_t[i, t] = ts[(offset + time_idx) % data_size]
+            time_idx += 1
+        # iter=0
+        #     [        ][        ][        ][        ][        ]
+        #      [        ][        ][        ][        ][       |]
+        #       [        ][        ][        ][        ][      | ]
+        #        [        ][        ][        ][        ][     |  ]
+        #         [        ][        ][        ][        ][    |   ]
+        # iter=1
+        #          [        ][        ][        ][        ][   |    ]
+        #           [        ][        ][        ][        ][  |     ]
+        #            [        ][        ][        ][        ][ |      ]
+        #             [        ][        ][        ][        ][|       ]
+        #              [        ][        ][        ][        ]|        ]
+
+        # 勾配を求め、パラメータを更新
+        loss = model.forward(batch_x, batch_t)
+        model.backward()
+        optimizer.update(model.params, model.grads)
+        total_loss += loss
+        loss_count += 1
+
+    # エポックごとにパープレキシティの評価
+    ppl = np.exp(total_loss / loss_count)
+    print('%d,%.2f' % (epoch + 1, ppl))
+    ppl_list.append(float(ppl))
+    total_loss, loss_count = 0, 0

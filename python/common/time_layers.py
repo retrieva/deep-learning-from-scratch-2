@@ -1,3 +1,7 @@
+from common.np import *  # import numpy as np (or import cupy as np)
+from common.layers import *
+from common.functions import sigmoid
+
 class RNN:
     def __init__(self, Wx, Wh, b):
         self.params = [Wx, Wh, b]
@@ -30,7 +34,7 @@ class RNN:
         return dx, dh_prev 
 
 class TimeRNN:
-    def __init__(self, Wx, Wh, b, stateful=False)
+    def __init__(self, Wx, Wh, b, stateful=False):
         self.params = [Wx, Wh, b]
         self.grads = [np.zeros_like(Wx), np.zeros_like(Wh), np.zeros_like(b)]
         self.layers = None 
@@ -68,7 +72,7 @@ class TimeRNN:
         N, T, H = dhs.shape
         D, H = Wx.shape 
 
-        dxs = np.emty((N, T, D), dtype='f')
+        dxs = np.empty((N, T, D), dtype='f')
         dh = 0 
         grads = [0, 0, 0]
         for t in reversed(range(T)):
