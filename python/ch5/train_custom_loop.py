@@ -1,6 +1,6 @@
 import sys 
 sys.path.append('..')
-import matplotlib.pypot as plt 
+import matplotlib.pyplot as plt 
 import numpy as np 
 from common.optimizer import SGD 
 from dataset import ptb 
@@ -71,3 +71,7 @@ for epoch in range(max_epoch):
     print('%d,%.2f' % (epoch + 1, ppl))
     ppl_list.append(float(ppl))
     total_loss, loss_count = 0, 0
+
+
+plt.plot(ppl_list)
+plt.show()
