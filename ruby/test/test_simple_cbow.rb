@@ -11,9 +11,9 @@ class TestSimpleCBow < Test::Unit::TestCase
   end
 
   def test_forward
-    contexts = Numo::NArray[[[1, 0, 0, 0, 0, 0, 0],
-                             [0, 0, 1, 0, 0, 0, 0]]]
-    target = Numo::NArray[[0, 1, 0, 0, 0, 0, 0]]
+    contexts = Numo::NArray[[1, 0, 0, 0, 0, 0, 0],
+                             [0, 0, 1, 0, 0, 0, 0]]
+    target = Numo::NArray[0, 1, 0, 0, 0, 0, 0]
 
     @simple_cbow.forward(contexts, target)
     assert(true)
@@ -22,9 +22,9 @@ class TestSimpleCBow < Test::Unit::TestCase
   def test_backward
     Numo::NArray.srand(1)
 
-    contexts = Numo::NArray[[[1, 0, 0, 0, 0, 0, 0],
-                             [0, 0, 1, 0, 0, 0, 0]]]
-    target = Numo::NArray[[0, 1, 0, 0, 0, 0, 0]]
+    contexts = Numo::NArray[[1, 0, 0, 0, 0, 0, 0],
+                             [0, 0, 1, 0, 0, 0, 0]]
+    target = Numo::NArray[0, 1, 0, 0, 0, 0, 0]
 
     @simple_cbow.forward(contexts, target)
     @simple_cbow.backward
