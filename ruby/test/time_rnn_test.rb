@@ -39,9 +39,21 @@ class TimeRNNTest < Test::Unit::TestCase
 
     actual = @target.forward(x)
 
-    expected = []
+    expected = Numo::SFloat[
+      [
+        [0.300437, 0.413644],
+        [0.523783, 0.790352]
+      ],
+      [
+        [0.300437, 0.413644],
+        [0.523783, 0.790352]
+      ],
+      [
+        [0.300437, 0.413644],
+        [0.523783, 0.790352]
+      ]
+    ]
 
-    # assert_delta_array(expected, actual)
-    # TODO 上のメソッドを汎用化して使う。
+    assert_delta_array(expected, actual)
   end
 end

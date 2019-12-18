@@ -37,7 +37,7 @@ class RnnTest < Test::Unit::TestCase
         [0.2, 0.2]
     ] # N x H
     actual = @target.forward(x, h_prev)
-    expected = [
+    expected = Numo::SFloat[
         [0.446244, 0.739783],
         [0.462117, 0.769867],
         [0.610677, 0.817754],
@@ -73,16 +73,17 @@ class RnnTest < Test::Unit::TestCase
     ] # N x H
     @target.forward(x, h_prev)
     actual_dx, actual_dh_prev = @target.backward(dh_next)
-
-    assert_delta_array([[0.0692981, 0.301218],
-                        [0.0404489, 0.16966],
-                        [0.077023, 0.351987],
-                        [0.043341, 0.191718],
-                        [0.0286192, 0.127787]], actual_dx)
-    assert_delta_array([[0.141376, 0.22775],
-                        [0.0640424, 0.154494],
-                        [0.208708, 0.19297],
-                        [0.0984021, 0.130797],
-                        [0.068549, 0.0822017]], actual_dh_prev)
+    expected_dx = Numo::SFloat[[0.0692981, 0.301218],
+                               [0.0404489, 0.16966],
+                               [0.077023, 0.351987],
+                               [0.043341, 0.191718],
+                               [0.0286192, 0.127787]]
+    assert_delta_array(expected_dx, actual_dx)
+    expected_dh_prev = Numo::SFloat[[0.141376, 0.22775],
+                                    [0.0640424, 0.154494],
+                                    [0.208708, 0.19297],
+                                    [0.0984021, 0.130797],
+                                    [0.068549, 0.0822017]]
+    assert_delta_array(expected_dh_prev, actual_dh_prev)
   end
 end
