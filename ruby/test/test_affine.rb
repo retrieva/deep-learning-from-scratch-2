@@ -65,7 +65,7 @@ class TestAffine < Test::Unit::TestCase
     @target.forward(x)
     dLdx = @target.backward(dout)
     assert_equal Numo::SFloat[[6,26],[3,13],[6,26]], dLdx #dx
-    assert_equal Numo::SFloat[[7.5],[3.75]], @target.grads[0] #dW
-    assert_equal Numo::SFloat[2.5], @target.grads[1] #repeat
+    assert_equal Numo::SFloat[[7.5, 7.5, 7.5],[3.75, 3.75, 3.75]], @target.grads[0] #dW
+    assert_equal Numo::SFloat[2.5, 2.5, 2.5], @target.grads[1] #repeat
   end
 end
