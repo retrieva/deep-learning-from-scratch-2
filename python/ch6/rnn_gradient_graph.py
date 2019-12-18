@@ -28,7 +28,7 @@ def clip_grads(grads, max_norm):
 norm_list = []
 for t in range(T):
     dh = np.dot(dh, Wh.T)
-    clip_grads(dh, max_norm)
+#    clip_grads(dh, max_norm)
     norm = np.sqrt(np.sum(dh**2)) / N
     norm_list.append(norm)
 
