@@ -1,7 +1,7 @@
-require "test/unit"
+require "test_helper"
 require "simple_cbow"
 
-class TestSimpleCBow < Test::Unit::TestCase
+class SimpleCBowTest < Test::Unit::TestCase
   def setup
     @simple_cbow = SimpleCBow.new(7, 3)
   end

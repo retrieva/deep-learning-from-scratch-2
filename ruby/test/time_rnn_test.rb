@@ -1,8 +1,8 @@
-require "test/unit"
-require "./lib/time_rnn"
+require "test_helper"
+require "time_rnn"
 require "numo/narray"
 
-class TestTimeRNN < Test::Unit::TestCase
+class TimeRNNTest < Test::Unit::TestCase
   def setup
     # N = 5, D = 2, H = 2
     @wx = Numo::SFloat[[0.1, 0.2], [0.5, 0.8]] # D x H

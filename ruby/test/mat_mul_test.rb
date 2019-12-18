@@ -1,8 +1,8 @@
-require "test/unit"
-require "./lib/mat_mul"
+require "test_helper"
+require "mat_mul"
 require "numo/narray"
 
-class TestAffine < Test::Unit::TestCase
+class MatMulTest < Test::Unit::TestCase
   def setup
     @weight = Numo::SFloat[[1,2,3],[5,8,13]] # input: 2, hidden: 3
     @target = MatMul.new(@weight)

@@ -1,6 +1,6 @@
-require_relative '../lib/affine'
-require_relative '../lib/sigmoid'
-require_relative '../lib/softmax_with_loss'
+require 'affine'
+require 'sigmoid'
+require 'softmax_with_loss'
 require 'byebug'
 
 class TwoLayersNet

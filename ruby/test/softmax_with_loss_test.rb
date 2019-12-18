@@ -1,8 +1,8 @@
-require "test/unit"
+require "test_helper"
 require "softmax_with_loss"
 require "numo/narray"
 
-class TestSoftmaxWithLoss < Test::Unit::TestCase
+class SoftmaxWithLossTest < Test::Unit::TestCase
   def setup
     @target = SoftmaxWithLoss.new
     assert_equal [nil, nil], @target.params
