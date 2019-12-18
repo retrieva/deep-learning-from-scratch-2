@@ -43,11 +43,11 @@ class TimeRnn
     n, t, h = dhs.shape
     d, h = wx.shape
 
-    dxs = Numo::SFloat.new(n, t, d)
+    dxs = Numo::SFloat.zeros(n, t, d)
     dh = 0
     grads = [0, 0, 0]
 
-    (t - 1).downto(0).to_a do |ti|
+    (t - 1).downto(0) do |ti|
       layer = @layers[ti]
       dx, dh = layer.backward(dhs[true, ti, true] + dh)
       dxs[true, ti, true] = dx
