@@ -41,3 +41,9 @@ print('test perplexity: ', ppl_test)
 
 # パラメータの保存
 model.save_params()
+
+
+# | epoch 4 |  iter 1321 / 1327 | time 2590[s] | perplexity 110.01
+# evaluating perplexity ...
+# 234 / 235
+# test perplexity:  136.49846872347803
