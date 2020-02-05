@@ -228,7 +228,6 @@ class LSTM:
 
     def backward(self, dh_next, dc_next):
         Wx, Wh, b = self.params
-        N,H = h_prev.shape
         x, h_prev, c_prev, i, f, g, o, c_next = self.cache
 
         tanh_c_next = np.tanh(c_next)
@@ -264,7 +263,7 @@ class LSTM:
 
 
 class TimeLSTM:
-    def __init__(self, Wx, Wh, b, stateful=false):
+    def __init__(self, Wx, Wh, b, stateful=False):
         self.params = [Wx, Wh, b]
         self.grads = [np.zeros_like(Wx), np.zeros_like(Wh), np.zeros_like(b)]
         self.layers = None
